@@ -1,37 +1,70 @@
 using UnityEngine;
+using UnityEngine.Tilemaps; // Önemli
 
 public class EnemySpawnManager : MonoBehaviour
 {
-    public GameObject[] Enemies = new GameObject[2];
-    private GameObject player;
-    public float spawnX;
-    public float spawnY;
-    public float spawnTimer;
-    public float spawnRate;
+    public GameObject[] Enemies;
+    public Tilemap obstacleTilemap; // Engellerin olduğu tilemap
+    public float spawnRate = 2f;
+    public float spawnRangeX = 10f;
+    public float spawnRangeY = 7f;
+    public float minDistanceFromPlayer = 2f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private float spawnTimer;
+    private GameObject player;
+
     void Start()
     {
         spawnTimer = spawnRate;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(player == null) return;
-        
+        if (player == null) return;
+
         if (spawnTimer <= 0)
         {
-            spawnX = Random.Range(-6f, 6f);
-            spawnY = Random.Range(-3f, 3f);
-            int randomIndex = Random.Range(0, Enemies.Length);
-            Instantiate(Enemies[randomIndex], new Vector3(spawnX, spawnY, 0), Quaternion.identity);
+            Vector2 spawnPos;
+            if (FindValidSpawnPosition(out spawnPos))
+            {
+                int randomIndex = Random.Range(0, Enemies.Length);
+                Instantiate(Enemies[randomIndex], spawnPos, Quaternion.identity);
+            }
             spawnTimer = spawnRate;
         }
         else
         {
             spawnTimer -= Time.deltaTime;
         }
+    }
+
+    bool FindValidSpawnPosition(out Vector2 position)
+    {
+        for (int i = 0; i < 30; i++) // 30 deneme
+        {
+            float spawnX = Random.Range(-spawnRangeX, spawnRangeX);
+            float spawnY = Random.Range(-spawnRangeY, spawnRangeY);
+            Vector2 testPos = new Vector2(spawnX, spawnY);
+
+            // Oyuncuya çok yakın olmasın
+            if (Vector2.Distance(testPos, player.transform.position) < minDistanceFromPlayer)
+                continue;
+
+            // Dünya pozisyonunu tile hücresine çevir
+            Vector3Int cellPos = obstacleTilemap.WorldToCell(testPos);
+
+            // Bu hücrede engel tile'ı var mı?
+            if (obstacleTilemap.GetTile(cellPos) != null)
+                continue; // Engel var → spawn yapma
+
+            // Engel yok → geçerli pozisyon
+            position = testPos;
+            return true;
+        }
+
+        position = Vector2.zero;
+        Debug.Log("Enemy spawn failed");
+        return false; // Uygun pozisyon bulunamadı
     }
 }
