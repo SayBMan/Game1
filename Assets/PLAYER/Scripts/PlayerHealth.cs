@@ -5,6 +5,8 @@ public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth;
     public float currentHealth;
+    public float maxArmor;
+    public float currentArmor;
     private PlayerController playerController;
     void Start()
     {
@@ -15,7 +17,15 @@ public class PlayerHealth : MonoBehaviour
     public void ChangeHealth(float amount)
     {
         float lastHealth = currentHealth;
-        currentHealth += amount;
+        if (amount < 0)
+        {
+            currentHealth += amount - amount * (currentArmor / 100);
+        }
+        else
+        {
+            currentHealth += amount;
+        }
+        
         float healthDiff = currentHealth - lastHealth;
 
         if (healthDiff < 0)

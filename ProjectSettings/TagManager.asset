@@ -15,8 +15,8 @@ TagManager:
   - Obstacles
   - Character Sensor
   - Decoratives
-  - 
-  - 
+  - CameraBounds
+  - Collectible
   - 
   - 
   - 

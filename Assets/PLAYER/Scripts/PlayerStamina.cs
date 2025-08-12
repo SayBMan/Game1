@@ -57,4 +57,10 @@ public class PlayerStamina : MonoBehaviour
         staminaRegenTimer = staminaRegenDelay;
     }
 
+    public void GetStamina(float amount)
+    {
+        currentStamina += amount;
+        if (currentStamina > maxStamina) currentStamina = maxStamina;
+    }
+
 }

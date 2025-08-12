@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 404d5f3b41742e54d8fb7182a2eea456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 6
+  maxHealth: 60
   currentHealth: 0
 --- !u!114 &6132693668522134015
 MonoBehaviour:
@@ -235,7 +235,7 @@ MonoBehaviour:
   enemyController: {fileID: 3133128048820928716}
   attackPoint: {fileID: 2975038899193382173}
   attackSpeed: 1.2
-  attackDamage: 2
+  attackDamage: 13
   attackRadius: 0.25
   attackCooldown: 1.5
   attackTimer: 0
