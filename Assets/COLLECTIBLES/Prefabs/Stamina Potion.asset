@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Stamina Potion
   m_EditorClassIdentifier: 
+  itemType: 5
   itemName: Stamina Potion
   icon: {fileID: 0}
   value: 20
-  itemType: 5
+  dropChance: 20

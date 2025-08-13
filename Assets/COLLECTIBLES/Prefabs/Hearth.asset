@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Hearth
   m_EditorClassIdentifier: 
+  itemType: 6
   itemName: Hearth
   icon: {fileID: 0}
   value: 10
-  itemType: 6
+  dropChance: 5

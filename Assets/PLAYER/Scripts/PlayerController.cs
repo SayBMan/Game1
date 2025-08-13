@@ -155,7 +155,15 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("runSpeed", 1.5f);
             currentSpeed = moveSpeed * sprintModifier;
         }
-        playerStamina.UseStamina(playerStamina.sprintStaminaCost * Time.deltaTime);
+        if (facingDirection != Vector2.zero)
+        {
+            playerStamina.UseStamina(playerStamina.sprintStaminaCost * Time.deltaTime);
+        }
+        else
+        {
+            isSprinting = false;
+        }
+        
     }
     private void StopSprinting()
     {
@@ -225,6 +233,10 @@ public class PlayerController : MonoBehaviour
         if (isDead || isHurt) return;
 
         isHurt = true;
+        isAttacking = false;
+        isDashing = false;
+        isSprinting = false;
+        
         rb.linearVelocity = Vector2.zero;
         ChangeState(PlayerState.Hurt);
         hurtPosition = GetDirection(lastFacingDirection);

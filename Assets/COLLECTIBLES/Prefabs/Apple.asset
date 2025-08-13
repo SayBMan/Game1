@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
+  itemType: 0
   itemName: Apple
   icon: {fileID: -433667773, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 5
-  itemType: 0
+  dropChance: 30

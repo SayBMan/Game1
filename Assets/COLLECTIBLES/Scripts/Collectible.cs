@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class Collectible : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class Collectible : MonoBehaviour
     private PlayerAttack playerAttack;
     private PlayerStamina playerStamina;
     private PlayerController playerController;
-    
+
+    private bool isCollected = false; // Çift tetiklemeyi engellemek için
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -21,14 +24,40 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isCollected) return; // Daha önce toplandıysa çık
         if (collision.CompareTag("Player"))
         {
-            ApplyEffect(collision.gameObject);
-            StartCoroutine(DestroyAfterDelay(0.05f));
+            isCollected = true;
+            PlayCollectAnimation();
         }
     }
 
-    private void ApplyEffect(GameObject player)
+    private void PlayCollectAnimation()
+    {
+        Vector3 startPos = transform.position;
+        Vector3 upPos = startPos + Vector3.up * 0.2f;
+        float duration = 0.15f;
+
+        Sequence seq = DOTween.Sequence();
+
+        // Yukarı çıkış
+        seq.Append(transform.DOMove(upPos, duration).SetEase(Ease.OutQuad));
+
+        // Geri iniş
+        seq.Append(transform.DOMove(startPos, duration).SetEase(Ease.InQuad));
+
+        // Bitince efekti uygula ve objeyi yok et
+        seq.OnComplete(() =>
+        {
+            ApplyEffect();
+            Destroy(gameObject);
+        });
+
+        // Hedef olarak transform'u ayarla (objeyle birlikte tween yok olur)
+        seq.SetTarget(transform);
+    }
+
+    private void ApplyEffect()
     {
         switch (data.itemType)
         {
@@ -45,7 +74,7 @@ public class Collectible : MonoBehaviour
                 break;
 
             case ItemType.Helmet:
-                
+                // İleride eklenebilir
                 break;
 
             case ItemType.HealthPotion:
@@ -56,8 +85,12 @@ public class Collectible : MonoBehaviour
                 playerStamina.GetStamina(data.value);
                 break;
 
-            case ItemType.Powerup:
+            case ItemType.Health:
                 playerHealth.maxHealth += data.value;
+                break;
+
+            case ItemType.Stamina:
+                playerStamina.maxStamina += data.value;
                 break;
 
             default:
@@ -66,9 +99,9 @@ public class Collectible : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator DestroyAfterDelay(float delay)
+    private void OnDestroy()
     {
-        yield return new WaitForSeconds(delay);
-        Destroy(gameObject);
+        // Obje yok olurken aktif tüm tween'leri öldür
+        transform.DOKill();
     }
 }

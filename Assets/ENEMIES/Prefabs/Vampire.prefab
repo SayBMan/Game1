@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3133128048820928716}
   - component: {fileID: -4760238132992432241}
   - component: {fileID: 6132693668522134015}
+  - component: {fileID: 6909209914329583879}
   m_Layer: 3
   m_Name: Vampire
   m_TagString: Untagged
@@ -156,7 +157,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.06}
   m_Size: {x: 0.3, y: 0.4}
   m_Direction: 0
 --- !u!95 &8992095708584986660
@@ -242,6 +243,19 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &6909209914329583879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434734520764804541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cde3f2cd3d04140ac798c0b371ea6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectiblePrefab: []
 --- !u!1 &2481442148223753750
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +381,6 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.32, y: 0.43}
+  m_Offset: {x: 0, y: -0.06}
+  m_Size: {x: 0.33, y: 0.43}
   m_Direction: 0
