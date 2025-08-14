@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     private Vector2 facingDirection;
     private Vector2 lastFacingDirection;
     private float moveMagnitude;
+    public float stopDistanceWhileCooldown = 0.5f;
 
     [Header("Combat")]
     private Vector2 attackDirection;

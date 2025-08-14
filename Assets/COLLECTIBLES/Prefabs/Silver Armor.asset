@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Silver Armor
   icon: {fileID: 0}
   value: 2
-  dropChance: 10
+  dropChance: 15
