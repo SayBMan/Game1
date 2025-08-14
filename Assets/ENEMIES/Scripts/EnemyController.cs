@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class EnemyController : MonoBehaviour
 {
@@ -7,11 +8,12 @@ public class EnemyController : MonoBehaviour
     public float moveSpeed = 3f;
     public float detectionRange = 5f;
     public float attackRange = 1f;
+    public float stopDistanceWhileCooldown = 0.5f;
+
     private float distanceToPlayer;
     private Vector2 facingDirection;
     private Vector2 lastFacingDirection;
     private float moveMagnitude;
-    public float stopDistanceWhileCooldown = 0.5f;
 
     [Header("Combat")]
     private Vector2 attackDirection;
@@ -34,14 +36,17 @@ public class EnemyController : MonoBehaviour
 
     [Header("States")]
     private EnemyState currentState = EnemyState.FreeMovement;
-    [HideInInspector] public EnemyState deathState;
-    [HideInInspector] public EnemyState attackState;
+
+    [Header("Detection")]
+    public LayerMask obstacleMask;
+    public float raycastOffsetY = 0.5f;
+    public bool hasLineOfSight = false;
 
     void Start()
     {
         Collider2D enemyCollider = GetComponent<Collider2D>();
         Physics2D.IgnoreCollision(enemyCollider, childCollider);
-        
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerAttack = player.GetComponent<PlayerAttack>();
         rb = GetComponent<Rigidbody2D>();
@@ -55,6 +60,7 @@ public class EnemyController : MonoBehaviour
         EnemyBrain();
         MovementAnimationControl();
     }
+
     void FixedUpdate()
     {
         if (currentState == EnemyState.FreeMovement)
@@ -70,37 +76,61 @@ public class EnemyController : MonoBehaviour
 
         distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= detectionRange && distanceToPlayer > attackRange)
+        // İlk görüş kontrolü
+        if (!hasLineOfSight && distanceToPlayer <= detectionRange)
         {
-            facingDirection = (player.position - transform.position).normalized;
-            ChangeState(EnemyState.FreeMovement);
-        }
-        else if (distanceToPlayer <= attackRange)
-        {
-            rb.linearVelocity = Vector2.zero;
-
-            if (enemyAttack.attackTimer <= 0f)
+            if (CheckLineOfSight())
             {
-                HandleAttack();
+                hasLineOfSight = true;
+            }
+            else
+            {
+                // Görmüyorsa sabit kal
+                facingDirection = Vector2.zero;
+                moveMagnitude = facingDirection.magnitude;
+                return;
+            }
+        }
+
+        // Takip devam ediyorsa
+        if (hasLineOfSight)
+        {
+            if (distanceToPlayer > detectionRange)
+            {
+                // Menzil dışına çıktıysa görüşü sıfırla
+                hasLineOfSight = false;
+                facingDirection = Vector2.zero;
+                moveMagnitude = facingDirection.magnitude;
+                return;
+            }
+
+            if (distanceToPlayer > attackRange)
+            {
+                facingDirection = (player.position - transform.position).normalized;
+                ChangeState(EnemyState.FreeMovement);
             }
             else
             {
                 rb.linearVelocity = Vector2.zero;
-                facingDirection = Vector2.zero;
-                ChangeState(EnemyState.FreeMovement);
+
+                if (enemyAttack.attackTimer <= 0f)
+                {
+                    HandleAttack();
+                }
+                else
+                {
+                    rb.linearVelocity = Vector2.zero;
+                    facingDirection = Vector2.zero;
+                    ChangeState(EnemyState.FreeMovement);
+                }
             }
-        }
-        else if (distanceToPlayer > detectionRange)
-        {
-            facingDirection = Vector2.zero;
-            ChangeState(EnemyState.FreeMovement);
-        }
 
-        moveMagnitude = new Vector2(facingDirection.x, facingDirection.y).magnitude;
+            moveMagnitude = facingDirection.magnitude;
 
-        if (facingDirection != Vector2.zero)
-        {
-            lastFacingDirection = facingDirection;
+            if (facingDirection != Vector2.zero)
+            {
+                lastFacingDirection = facingDirection;
+            }
         }
     }
     #endregion
@@ -180,7 +210,7 @@ public class EnemyController : MonoBehaviour
         lastFacingDirection = attackDirection;
         isAttacking = false;
         enemyAttack.attackTimer = enemyAttack.attackCooldown;
-    }   
+    }
     #endregion
 
     #region State
@@ -191,37 +221,47 @@ public class EnemyController : MonoBehaviour
     }
     #endregion
 
+    #region Utility
     private int GetDirection(Vector2 direction)
     {
         float x = direction.x;
         float y = direction.y;
         if (y < 0 && Mathf.Abs(y) >= Mathf.Abs(x))
-        {
             return 1; // Down
-        }
         else if (y > 0 && Mathf.Abs(y) >= Mathf.Abs(x))
-        {
             return 4; // Up
-        }
         else if (x > 0 && Mathf.Abs(x) >= Mathf.Abs(y))
-        {
             return 3; // Right
-        }
         else if (x < 0 && Mathf.Abs(x) >= Mathf.Abs(y))
-        {
             return 2; // Left
-        }
         else
-        {
             return 1;
-        }
     }
 
-}
-public enum EnemyState
+    private bool CheckLineOfSight()
     {
-        FreeMovement,
-        Attack,
-        Hurt,
-        Dead,
+        Vector2 start = (Vector2)transform.position + Vector2.up * raycastOffsetY;
+        Vector2 direction = (player.position - transform.position).normalized;
+        float distance = Vector2.Distance(transform.position, player.position);
+
+        RaycastHit2D hit = Physics2D.Raycast(start, direction, distance, obstacleMask | LayerMask.GetMask("Player"));
+        Debug.DrawRay(start, direction * distance, Color.red);
+
+        if (hit.collider != null)
+        {
+            Debug.DrawLine(start, hit.point, Color.green);
+            return hit.collider.CompareTag("Player");
+            
+        }
+        return false;
     }
+    #endregion
+}
+
+public enum EnemyState
+{
+    FreeMovement,
+    Attack,
+    Hurt,
+    Dead,
+}

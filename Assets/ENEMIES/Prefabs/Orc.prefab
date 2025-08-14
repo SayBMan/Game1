@@ -325,6 +325,7 @@ MonoBehaviour:
   moveSpeed: 90
   detectionRange: 3.5
   attackRange: 0.5
+  stopDistanceWhileCooldown: 0.5
   attackPosition: 0
   isHurt: 0
   isDead: 0
@@ -333,8 +334,11 @@ MonoBehaviour:
   enemyAttack: {fileID: 7265581569848853995}
   rb_child: {fileID: 2163039726085172984}
   childCollider: {fileID: 7632691215145016151}
-  deathState: 0
-  attackState: 0
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 128
+  raycastOffsetY: 0
+  hasLineOfSight: 0
 --- !u!114 &9126170002768939610
 MonoBehaviour:
   m_ObjectHideFlags: 0
