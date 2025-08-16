@@ -6,8 +6,10 @@ public class EnemySpawnManager : MonoBehaviour
     public GameObject[] Enemies;
     public Tilemap obstacleTilemap; // Engellerin olduğu tilemap
     public float spawnRate = 2f;
-    public float spawnRangeX = 10f;
-    public float spawnRangeY = 7f;
+    public float spawnRangeX = 18f;
+    public float spawnRangeXneg = -8f;
+    public float spawnRangeY = 8f;
+    public float spawnRangeYneg = -10f;
     public float minDistanceFromPlayer = 2f;
 
     private float spawnTimer;
@@ -43,8 +45,8 @@ public class EnemySpawnManager : MonoBehaviour
     {
         for (int i = 0; i < 30; i++) // 30 deneme
         {
-            float spawnX = Random.Range(-spawnRangeX, spawnRangeX);
-            float spawnY = Random.Range(-spawnRangeY, spawnRangeY);
+            float spawnX = Random.Range(spawnRangeXneg, spawnRangeX);
+            float spawnY = Random.Range(spawnRangeYneg, spawnRangeY);
             Vector2 testPos = new Vector2(spawnX, spawnY);
 
             // Oyuncuya çok yakın olmasın

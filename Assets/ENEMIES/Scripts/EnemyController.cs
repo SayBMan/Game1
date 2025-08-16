@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class EnemyController : MonoBehaviour
 {
@@ -85,7 +84,6 @@ public class EnemyController : MonoBehaviour
             }
             else
             {
-                // Görmüyorsa sabit kal
                 facingDirection = Vector2.zero;
                 moveMagnitude = facingDirection.magnitude;
                 return;
@@ -97,7 +95,6 @@ public class EnemyController : MonoBehaviour
         {
             if (distanceToPlayer > detectionRange)
             {
-                // Menzil dışına çıktıysa görüşü sıfırla
                 hasLineOfSight = false;
                 facingDirection = Vector2.zero;
                 moveMagnitude = facingDirection.magnitude;
@@ -106,7 +103,8 @@ public class EnemyController : MonoBehaviour
 
             if (distanceToPlayer > attackRange)
             {
-                facingDirection = (player.position - transform.position).normalized;
+                Vector2 targetDir = (player.position - transform.position).normalized;
+                facingDirection = GetDirectionWithAvoidance(targetDir);
                 ChangeState(EnemyState.FreeMovement);
             }
             else
@@ -138,7 +136,7 @@ public class EnemyController : MonoBehaviour
     #region Movement
     void Move()
     {
-        rb.linearVelocity = moveSpeed * Time.fixedDeltaTime * facingDirection;
+        rb.linearVelocity = moveSpeed * facingDirection * Time.fixedDeltaTime;
     }
 
     void MovementAnimationControl()
@@ -240,7 +238,7 @@ public class EnemyController : MonoBehaviour
 
     private bool CheckLineOfSight()
     {
-        Vector2 start = (Vector2)transform.position + Vector2.up * raycastOffsetY;
+        Vector2 start = (Vector2)transform.position;
         Vector2 direction = (player.position - transform.position).normalized;
         float distance = Vector2.Distance(transform.position, player.position);
 
@@ -251,9 +249,32 @@ public class EnemyController : MonoBehaviour
         {
             Debug.DrawLine(start, hit.point, Color.green);
             return hit.collider.CompareTag("Player");
-            
         }
         return false;
+    }
+
+    // Basit engelden kaçma metodu
+    private Vector2 GetDirectionWithAvoidance(Vector2 targetDir)
+    {
+        float checkDist = 0.5f;
+        float angleStep = 20f;
+        int maxTries = 5;
+
+        if (!Physics2D.Raycast(transform.position, targetDir, checkDist, obstacleMask))
+            return targetDir;
+
+        for (int i = 1; i <= maxTries; i++)
+        {
+            Vector2 rightDir = Quaternion.Euler(0, 0, angleStep * i) * targetDir;
+            if (!Physics2D.Raycast(transform.position, rightDir, checkDist, obstacleMask))
+                return rightDir.normalized;
+
+            Vector2 leftDir = Quaternion.Euler(0, 0, -angleStep * i) * targetDir;
+            if (!Physics2D.Raycast(transform.position, leftDir, checkDist, obstacleMask))
+                return leftDir.normalized;
+        }
+
+        return Vector2.zero;
     }
     #endregion
 }
