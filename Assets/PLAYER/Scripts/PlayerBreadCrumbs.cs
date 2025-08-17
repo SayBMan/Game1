@@ -11,8 +11,8 @@ public class PlayerBreadcrumbs : MonoBehaviour
     private float timer;
 
     // Statik listeler: Enemy’ler buradan okuyacak
-    public static readonly List<Vector3> Crumbs = new List<Vector3>();
-    public static readonly List<float> Times = new List<float>();
+    public List<Vector2> Crumbs = new List<Vector2>();
+    public List<float> Times = new List<float>();
 
     void Awake()
     {
@@ -28,7 +28,7 @@ public class PlayerBreadcrumbs : MonoBehaviour
         {
             timer = 0f;
 
-            Vector3 pos = transform.position;
+            Vector2 pos = transform.position;
             if (Crumbs.Count == 0 || Vector2.Distance(Crumbs[^1], pos) >= minDistanceBetweenCrumbs)
             {
                 Crumbs.Add(pos);

@@ -24882,7 +24882,7 @@ MonoBehaviour:
   playerAttack: {fileID: 1423313615}
   playerStamina: {fileID: 1423313616}
   childCollider: {fileID: 390648365}
-  moveSpeed: 105
+  moveSpeed: 2.3
   sprintModifier: 1.5
   isSprinting: 0
   currentSpeed: 0
@@ -25118,7 +25118,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423313606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf3c1f4355a87534aab7f08589ddb7e9, type: 3}
   m_Name: 
@@ -25126,6 +25126,8 @@ MonoBehaviour:
   recordInterval: 0.2
   breadcrumbLifetime: 3
   minDistanceBetweenCrumbs: 0.2
+  Crumbs: []
+  Times: []
 --- !u!1 &1432935160
 GameObject:
   m_ObjectHideFlags: 0
@@ -25595,13 +25597,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+      propertyPath: moveSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+      propertyPath: rayDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.2
+      value: 3.36
       objectReference: {fileID: 0}
     - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.78
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -25638,6 +25648,10 @@ PrefabInstance:
     - target: {fileID: 5570983968691185332, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: m_Name
       value: Orc
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767663622853375027, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

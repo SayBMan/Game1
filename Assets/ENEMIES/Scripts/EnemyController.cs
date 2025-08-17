@@ -25,11 +25,12 @@ public class EnemyController : MonoBehaviour
 
     [Header("References")]
     private Transform player;
+    private PlayerAttack playerAttack;
+    private PlayerBreadcrumbs playerBreadcrumbs;
     public Rigidbody2D rb;
     private Animator anim;
     public EnemyHealth enemyHealth;
     public EnemyAttack enemyAttack;
-    private PlayerAttack playerAttack;
     public Rigidbody2D rb_child;
     public Collider2D childCollider;
 
@@ -48,6 +49,7 @@ public class EnemyController : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerAttack = player.GetComponent<PlayerAttack>();
+        playerBreadcrumbs = player.GetComponent<PlayerBreadcrumbs>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
@@ -103,8 +105,7 @@ public class EnemyController : MonoBehaviour
 
             if (distanceToPlayer > attackRange)
             {
-                Vector2 targetDir = (player.position - transform.position).normalized;
-                facingDirection = GetDirectionWithAvoidance(targetDir);
+                facingDirection = (player.position - transform.position).normalized;
                 ChangeState(EnemyState.FreeMovement);
             }
             else
@@ -136,7 +137,7 @@ public class EnemyController : MonoBehaviour
     #region Movement
     void Move()
     {
-        rb.linearVelocity = moveSpeed * facingDirection * Time.fixedDeltaTime;
+        rb.linearVelocity = moveSpeed * facingDirection;
     }
 
     void MovementAnimationControl()
@@ -251,30 +252,6 @@ public class EnemyController : MonoBehaviour
             return hit.collider.CompareTag("Player");
         }
         return false;
-    }
-
-    // Basit engelden kaçma metodu
-    private Vector2 GetDirectionWithAvoidance(Vector2 targetDir)
-    {
-        float checkDist = 0.5f;
-        float angleStep = 20f;
-        int maxTries = 5;
-
-        if (!Physics2D.Raycast(transform.position, targetDir, checkDist, obstacleMask))
-            return targetDir;
-
-        for (int i = 1; i <= maxTries; i++)
-        {
-            Vector2 rightDir = Quaternion.Euler(0, 0, angleStep * i) * targetDir;
-            if (!Physics2D.Raycast(transform.position, rightDir, checkDist, obstacleMask))
-                return rightDir.normalized;
-
-            Vector2 leftDir = Quaternion.Euler(0, 0, -angleStep * i) * targetDir;
-            if (!Physics2D.Raycast(transform.position, leftDir, checkDist, obstacleMask))
-                return leftDir.normalized;
-        }
-
-        return Vector2.zero;
     }
     #endregion
 }

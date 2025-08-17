@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
     #region Move
     private void Move()
     {
-        rb.linearVelocity = currentSpeed * Time.fixedDeltaTime * facingDirection;
+        rb.linearVelocity = currentSpeed * facingDirection;
     }
     private void MovementAnimationControl()
     {
