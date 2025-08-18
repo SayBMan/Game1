@@ -247,7 +247,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -322,23 +322,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf1cced5c330834686e9514ac75a4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 90
+  moveSpeed: 1.5
   detectionRange: 3.5
   attackRange: 0.5
-  stopDistanceWhileCooldown: 0.5
-  attackPosition: 0
-  isHurt: 0
-  isDead: 0
-  rb: {fileID: 8767663622853375027}
-  enemyHealth: {fileID: 9126170002768939610}
-  enemyAttack: {fileID: 7265581569848853995}
-  rb_child: {fileID: 2163039726085172984}
-  childCollider: {fileID: 7632691215145016151}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  raycastOffsetY: 0
-  hasLineOfSight: 0
+  colliderRadius: 0.2
+  raycastOffset: 0
+  reachThreshold: 0.28
+  gridCandidateLimit: 0
+  avoidanceCastDistance: 0.45
+  avoidanceStrength: 0.838
+  rb: {fileID: 8767663622853375027}
+  enemyAttack: {fileID: 7265581569848853995}
+  childCollider: {fileID: 7632691215145016151}
+  rb_child: {fileID: 2163039726085172984}
+  attackPosition: 0
+  isHurt: 0
+  isDead: 0
 --- !u!114 &9126170002768939610
 MonoBehaviour:
   m_ObjectHideFlags: 0
