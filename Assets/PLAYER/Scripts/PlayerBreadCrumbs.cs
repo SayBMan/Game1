@@ -4,13 +4,12 @@ using UnityEngine;
 public class PlayerBreadcrumbs : MonoBehaviour
 {
     [Header("Recording")]
-    public float recordInterval = 0.3f;      // kaç sn’de bir konum kaydı
-    public float breadcrumbLifetime = 3f;    // en fazla kaç sn’lik iz tutulacak
-    public float minDistanceBetweenCrumbs = 0.12f; // peş peşe çok yakın noktaları alma
+    public float recordInterval = 0.3f;
+    public float breadcrumbLifetime = 3f;
+    public float minDistanceBetweenCrumbs = 0.12f;
 
     private float timer;
 
-    // Statik listeler: Enemy’ler buradan okuyacak
     public List<Vector2> Crumbs = new List<Vector2>();
     public List<float> Times = new List<float>();
 
@@ -44,12 +43,24 @@ public class PlayerBreadcrumbs : MonoBehaviour
         }
     }
 
+    // Enemy için yardımcı: sondan geriye doğru gez
+    public Vector2? GetLastVisibleCrumb(Transform enemy, EnemyController controller)
+    {
+        for (int i = Crumbs.Count - 1; i >= 0; i--)
+        {
+            Vector2 crumbPos = Crumbs[i];
+            if (controller.HasLineOfSight(crumbPos, false))
+                return crumbPos;
+        }
+        return null; // Hiçbiri görünmüyor
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         foreach (var crumb in Crumbs)
         {
-            Gizmos.DrawSphere(crumb, 0.1f);
+            Gizmos.DrawSphere(crumb, 0.08f);
         }
     }
 }

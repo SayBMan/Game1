@@ -25118,14 +25118,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423313606}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf3c1f4355a87534aab7f08589ddb7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordInterval: 0.2
-  breadcrumbLifetime: 3
-  minDistanceBetweenCrumbs: 0.2
+  recordInterval: 0.1
+  breadcrumbLifetime: 5
+  minDistanceBetweenCrumbs: 0.1
   Crumbs: []
   Times: []
 --- !u!1 &1432935160
@@ -25138,6 +25138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1432935162}
   - component: {fileID: 1432935161}
+  - component: {fileID: 1432935163}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -25177,6 +25178,19 @@ Transform:
   - {fileID: 1972457826}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1432935163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432935160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632ae7eb1d4ce49d38a1e38ee7efe7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 799cafff9455c2a7-be4987778ea694cd
 --- !u!1 &1456811599
 GameObject:
   m_ObjectHideFlags: 0
@@ -25599,11 +25613,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: moveSpeed
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: rayDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+      propertyPath: colliderRadius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+      propertyPath: crumbReachThreshold
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334217364556305524, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+      propertyPath: obstacleMask.m_Bits
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25790,7 +25816,7 @@ Transform:
   m_GameObject: {fileID: 1786145466}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.24, y: -10.4, z: 0}
+  m_LocalPosition: {x: 5.148, y: -1.747, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
