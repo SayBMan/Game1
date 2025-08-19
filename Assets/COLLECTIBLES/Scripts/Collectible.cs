@@ -77,6 +77,10 @@ public class Collectible : MonoBehaviour
                 // İleride eklenebilir
                 break;
 
+            case ItemType.Weapon:
+                playerAttack.attackDamage += data.value;
+                break;
+
             case ItemType.HealthPotion:
                 playerHealth.ChangeHealth(data.value);
                 break;

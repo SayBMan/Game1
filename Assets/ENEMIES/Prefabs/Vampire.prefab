@@ -194,23 +194,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf1cced5c330834686e9514ac75a4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 110
+  moveSpeed: 2
   detectionRange: 3.5
   attackRange: 0.6
-  stopDistanceWhileCooldown: 0.5
-  attackPosition: 0
-  isHurt: 0
-  isDead: 0
-  rb: {fileID: 6963404153098000232}
-  enemyHealth: {fileID: -4760238132992432241}
-  enemyAttack: {fileID: 6132693668522134015}
-  rb_child: {fileID: 6434873848809702722}
-  childCollider: {fileID: 543439736902255343}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  raycastOffsetY: 0
-  hasLineOfSight: 0
+  colliderRadius: 0.2
+  raycastOffset: 0
+  reachThreshold: 0.35
+  gridCandidateLimit: 0
+  avoidanceCastDistance: 0.45
+  avoidanceStrength: 0.8
+  rb: {fileID: 6963404153098000232}
+  enemyAttack: {fileID: 6132693668522134015}
+  childCollider: {fileID: 543439736902255343}
+  rb_child: {fileID: 6434873848809702722}
+  attackPosition: 0
+  isHurt: 0
+  isDead: 0
 --- !u!114 &-4760238132992432241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +261,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cde3f2cd3d04140ac798c0b371ea6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectiblePrefab: []
+  collectiblePrefab:
+  - {fileID: 6943731269484171944, guid: 4efeebec6799be849ac02f9cadd535d1, type: 3}
+  - {fileID: 6813903231687581813, guid: 2c0da6fb8bc2f0c4a818692b0f15a220, type: 3}
+  - {fileID: 5539544332989365572, guid: 134bf73d94e024a4997c220cae38050f, type: 3}
+  - {fileID: 6017810162894074735, guid: 8706978f0fc32844a8ce1a9506b00bdc, type: 3}
+  - {fileID: 8096376960520207986, guid: 88d16380a36714d469de20ac93ec633a, type: 3}
 --- !u!1 &2481442148223753750
 GameObject:
   m_ObjectHideFlags: 0

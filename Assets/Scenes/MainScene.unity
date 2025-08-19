@@ -166,7 +166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &78615720
 Transform:
   m_ObjectHideFlags: 0
@@ -5977,6 +5977,10 @@ PrefabInstance:
     - target: {fileID: 2881844264219148497, guid: d2f5845f01279a440b71be87cdcaa10c, type: 3}
       propertyPath: m_Name
       value: Chest1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2881844264219148497, guid: d2f5845f01279a440b71be87cdcaa10c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4339231339116194774, guid: d2f5845f01279a440b71be87cdcaa10c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25112,9 +25116,9 @@ GameObject:
   - component: {fileID: 1423313612}
   - component: {fileID: 1423313611}
   - component: {fileID: 1423313607}
+  - component: {fileID: 1423313615}
   - component: {fileID: 1423313614}
   - component: {fileID: 1423313616}
-  - component: {fileID: 1423313615}
   - component: {fileID: 1423313617}
   m_Layer: 6
   m_Name: Player Knight
@@ -25140,7 +25144,7 @@ MonoBehaviour:
   playerAttack: {fileID: 1423313615}
   playerStamina: {fileID: 1423313616}
   childCollider: {fileID: 390648365}
-  moveSpeed: 2.3
+  moveSpeed: 1.8
   sprintModifier: 1.5
   isSprinting: 0
   currentSpeed: 0
@@ -25858,63 +25862,6 @@ MonoBehaviour:
   staminaFill: {fileID: 1573267193}
   widthPerHealth: 3
   widthPerStamina: 2
---- !u!1001 &1596835667
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2785039546810811751, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5570983968691185332, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
-      propertyPath: m_Name
-      value: Orc
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
 --- !u!1 &1662608828
 GameObject:
   m_ObjectHideFlags: 0
@@ -26482,4 +26429,3 @@ SceneRoots:
   - {fileID: 78615720}
   - {fileID: 745102865}
   - {fileID: 1423313610}
-  - {fileID: 1596835667}

@@ -330,10 +330,10 @@ MonoBehaviour:
     m_Bits: 128
   colliderRadius: 0.2
   raycastOffset: 0
-  reachThreshold: 0.28
+  reachThreshold: 0.35
   gridCandidateLimit: 0
-  avoidanceCastDistance: 0.45
-  avoidanceStrength: 0.838
+  avoidanceCastDistance: 0.35
+  avoidanceStrength: 0.8
   rb: {fileID: 8767663622853375027}
   enemyAttack: {fileID: 7265581569848853995}
   childCollider: {fileID: 7632691215145016151}
@@ -394,3 +394,4 @@ MonoBehaviour:
   - {fileID: 7082826926947058445, guid: c3fb7f31fd4a0d94e983a0a6b0f91686, type: 3}
   - {fileID: 631945018152850307, guid: 9c49e2a314b2cb34ab9ccf070b3a0fcc, type: 3}
   - {fileID: 7863193589201119740, guid: 0f941351b8d92fe4e866e7e2c5baa355, type: 3}
+  - {fileID: 8096376960520207986, guid: 88d16380a36714d469de20ac93ec633a, type: 3}

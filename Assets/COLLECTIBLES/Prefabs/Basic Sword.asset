@@ -15,5 +15,5 @@ MonoBehaviour:
   itemType: 3
   itemName: Basic Sword
   icon: {fileID: 0}
-  value: 1
+  value: 2
   dropChance: 10
