@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Stamina Potion
   icon: {fileID: 0}
   value: 20
-  dropChance: 20
+  dropChance: 10

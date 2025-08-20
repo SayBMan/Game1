@@ -56,12 +56,12 @@ public class PlayerGridPoints : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected()
+    /*void OnDrawGizmosSelected()
     {
         RecalculateGrid();
         Gizmos.color = Color.yellow;
         foreach (var p in cachedPoints) Gizmos.DrawSphere(p, 0.04f);
         Gizmos.color = Color.white;
         Gizmos.DrawWireCube(transform.position, new Vector3(halfSize * 2f, halfSize * 2f, 0.01f));
-    }
+    }*/
 }

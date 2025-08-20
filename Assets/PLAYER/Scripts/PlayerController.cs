@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
         float y = dir.y;
 
         if (y > 0 && Mathf.Abs(y) >= Mathf.Abs(x))
-            return Vector2.up;
+            return x > 0 ? Vector2.right: (x < 0 ? Vector2.left : Vector2.up);
 
         if (y < 0 && Mathf.Abs(y) >= Mathf.Abs(x))
             return x > 0 ? Vector2.right : (x < 0 ? Vector2.left : Vector2.down);

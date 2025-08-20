@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Golden Armor
   icon: {fileID: 0}
   value: 5
-  dropChance: 5
+  dropChance: 2

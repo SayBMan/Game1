@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Apple
   icon: {fileID: -433667773, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 5
-  dropChance: 30
+  dropChance: 20

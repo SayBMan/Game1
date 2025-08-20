@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Cake
   icon: {fileID: 0}
   value: 15
-  dropChance: 15
+  dropChance: 10

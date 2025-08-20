@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Health Potion
   icon: {fileID: 0}
   value: 25
-  dropChance: 10
+  dropChance: 7

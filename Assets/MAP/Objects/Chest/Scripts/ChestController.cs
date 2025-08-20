@@ -47,7 +47,7 @@ public class ChestController : MonoBehaviour
     {
         isOpening = true;
 
-        animator.SetTrigger("Open");
+        if (animator != null) animator.SetTrigger("Open");
 
         // Spawn pozisyonu
         spawnPos = collectibleSpawnPoint != null ? collectibleSpawnPoint.position : transform.position + Vector3.up * 0.5f;
@@ -62,9 +62,8 @@ public class ChestController : MonoBehaviour
         // DOTween ile kavisli hareket
         colObj.transform.DOJump(targetPos, jumpPower, 1, jumpDuration)
             .SetEase(Ease.OutQuad);
-
     }
-    
+
     public void DropCollectible()
     {
         if (collectiblePrefab == null || collectiblePrefab.Length == 0)
@@ -73,12 +72,17 @@ public class ChestController : MonoBehaviour
             return;
         }
 
-        GameObject prefabToDrop = null;
+        GameObject prefabToDrop = PickRandomCollectible();
 
-        // Liste boş olmayana kadar tekrar seç
-        while (prefabToDrop == null)
+        if (prefabToDrop == null)
         {
-            prefabToDrop = PickRandomCollectible();
+            // Çok nadir: bütün dropChance'ler 0 veya veri hatası. Fallback: rastgele non-null prefab seç.
+            Debug.LogWarning("ChestController: Hiç geçerli drop bulunamadı (tüm dropChance = 0 veya veri eksik). Fallback olarak rasgele bir prefab spawnlanacak.");
+            // find any non-null prefab
+            List<GameObject> nonNull = new List<GameObject>();
+            foreach (var p in collectiblePrefab) if (p != null) nonNull.Add(p);
+            if (nonNull.Count == 0) return;
+            prefabToDrop = nonNull[Random.Range(0, nonNull.Count)];
         }
 
         colObj = Instantiate(prefabToDrop, spawnPos, Quaternion.identity);
@@ -86,27 +90,48 @@ public class ChestController : MonoBehaviour
 
     private GameObject PickRandomCollectible()
     {
-        List<GameObject> possibleDrops = new List<GameObject>();
-
+        // build list of valid drops (dropChance > 0)
+        var valid = new List<(GameObject prefab, float weight)>(collectiblePrefab.Length);
         foreach (GameObject prefab in collectiblePrefab)
         {
+            if (prefab == null) continue;
             Collectible collectible = prefab.GetComponent<Collectible>();
             if (collectible == null || collectible.data == null) continue;
 
-            float roll = Random.Range(0, 100);
-            if (roll <= collectible.data.dropChance)
+            float weight = collectible.data.dropChance;
+            if (weight <= 0f) continue; // kesinlikle seçilmesin
+
+            valid.Add((prefab, weight));
+        }
+
+        if (valid.Count == 0)
+        {
+            // Hiç geçerli yok -> caller fallback uygulasın
+            return null;
+        }
+
+        // toplam ağırlık
+        float totalWeight = 0f;
+        for (int i = 0; i < valid.Count; i++) totalWeight += valid[i].weight;
+
+        // güvenlik: totalWeight sıfır olamaz çünkü weight > 0 filtrelendi ama kontrol edelim
+        if (totalWeight <= 0f)
+        {
+            return null;
+        }
+
+        float roll = Random.Range(0f, totalWeight);
+        float cumulative = 0f;
+        for (int i = 0; i < valid.Count; i++)
+        {
+            cumulative += valid[i].weight;
+            if (roll <= cumulative)
             {
-                possibleDrops.Add(prefab);
+                return valid[i].prefab;
             }
         }
 
-        // Liste boşsa null döner, DropCollectible tekrar dener
-        if (possibleDrops.Count == 0)
-            return null;
-
-        int randomIndex = Random.Range(0, possibleDrops.Count);
-        return possibleDrops[randomIndex];
+        // teoretik olarak buraya gelmemeli, ama güvenlik için son elemanı dön
+        return valid[^1].prefab;
     }
-
-
 }

@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Cheese
   icon: {fileID: 0}
   value: 10
-  dropChance: 20
+  dropChance: 15

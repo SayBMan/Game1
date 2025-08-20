@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class UIController : MonoBehaviour
+public class PlayerBarsUIController : MonoBehaviour
 {
     public PlayerHealth playerHealth;
     public PlayerStamina playerStamina;

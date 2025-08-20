@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Powerful Sword
   icon: {fileID: 0}
   value: 4
-  dropChance: 5
+  dropChance: 2

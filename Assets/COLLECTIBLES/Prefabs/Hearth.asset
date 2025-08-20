@@ -16,4 +16,4 @@ MonoBehaviour:
   itemName: Hearth
   icon: {fileID: 0}
   value: 10
-  dropChance: 5
+  dropChance: 3
