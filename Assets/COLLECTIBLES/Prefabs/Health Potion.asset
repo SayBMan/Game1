@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 4
   itemName: Health Potion
-  icon: {fileID: 0}
+  icon: {fileID: 3312650956449269728, guid: 1687688e2896540488df0fec0c2dd358, type: 3}
   value: 25
   dropChance: 7

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 3
   itemName: Powerful Sword
-  icon: {fileID: 0}
+  icon: {fileID: 2451002373052964623, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 4
   dropChance: 2

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 2
   itemName: Helmet
-  icon: {fileID: 0}
+  icon: {fileID: 396895962, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 2
   dropChance: 7

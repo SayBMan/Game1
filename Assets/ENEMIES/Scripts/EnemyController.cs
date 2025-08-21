@@ -52,6 +52,7 @@ public class EnemyController : MonoBehaviour
     public bool isHurt;
     public bool isDead;
     private int deadPosition;
+    public event Action OnEnemyDied;
 
     // Targeting / chase flags
     private Vector2? currentTargetPoint;
@@ -454,7 +455,14 @@ public class EnemyController : MonoBehaviour
         if (rb_child != null) rb_child.simulated = false;
     }
 
-    public void Die() => Destroy(gameObject);
+    public void Die()
+    {
+        // notify listeners
+        if (EnemySpawnManager.Instance != null)
+        EnemySpawnManager.Instance.NotifyEnemyDied();
+
+        Destroy(gameObject);
+    }
     #endregion
 
     #region LoS & Avoidance
