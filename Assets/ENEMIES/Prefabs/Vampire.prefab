@@ -157,8 +157,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.06}
-  m_Size: {x: 0.3, y: 0.4}
+  m_Offset: {x: 0, y: -0.05}
+  m_Size: {x: 0.3, y: 0.42}
   m_Direction: 0
 --- !u!95 &8992095708584986660
 Animator:
@@ -194,9 +194,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf1cced5c330834686e9514ac75a4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 1.85
   detectionRange: 3.5
-  attackRange: 0.6
+  attackRange: 0.55
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
@@ -243,7 +243,7 @@ MonoBehaviour:
   attackPoint: {fileID: 2975038899193382173}
   attackSpeed: 1.2
   attackDamage: 13
-  attackRadius: 0.25
+  attackRadius: 0.3
   attackCooldown: 1.5
   attackTimer: 0
   playerLayer:
@@ -392,6 +392,6 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.06}
-  m_Size: {x: 0.33, y: 0.43}
+  m_Offset: {x: 0, y: -0.05}
+  m_Size: {x: 0.33, y: 0.45}
   m_Direction: 0

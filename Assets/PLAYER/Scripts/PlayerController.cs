@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public PlayerAttack playerAttack;
     public PlayerStamina playerStamina;
     public Collider2D childCollider;
+    public GameOverUIController gameOverUI;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -117,6 +118,7 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = currentSpeed * facingDirection;
     }
+
     private void MovementAnimationControl()
     {
         Vector2 adjustedDirection = GetPriorityDirection(facingDirection);
@@ -232,13 +234,14 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead || isHurt) return;
 
+        ChangeState(PlayerState.Hurt);
+
         isHurt = true;
         isAttacking = false;
         isDashing = false;
         isSprinting = false;
-        
         rb.linearVelocity = Vector2.zero;
-        ChangeState(PlayerState.Hurt);
+        
         hurtPosition = GetDirection(lastFacingDirection);
         anim.SetTrigger("isHurt");
         anim.SetInteger("HurtPosition", hurtPosition);
@@ -256,7 +259,6 @@ public class PlayerController : MonoBehaviour
     {   
         if (isDead) return;
 
-        isDead = true;
         rb.linearVelocity = Vector2.zero;
         ChangeState(PlayerState.Dead);
         deadPosition = GetDirection(lastFacingDirection);
@@ -265,7 +267,8 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator Die()
     {
-        yield return new WaitForSeconds(0.5f);
+        isDead = true;  
+        yield return new WaitForSecondsRealtime(0.5f);  
         Destroy(gameObject);
     }
     #endregion
