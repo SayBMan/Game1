@@ -390,8 +390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectiblePrefab:
-  - {fileID: 6017810162894074735, guid: 8706978f0fc32844a8ce1a9506b00bdc, type: 3}
-  - {fileID: 7082826926947058445, guid: c3fb7f31fd4a0d94e983a0a6b0f91686, type: 3}
+  - {fileID: 6947649154048406816, guid: 177a22f59883e7c4daffb6800836c8aa, type: 3}
+  - {fileID: 8772018573280988245, guid: 6cbd72dfaa0e3f94c8c7103c54a41699, type: 3}
   - {fileID: 631945018152850307, guid: 9c49e2a314b2cb34ab9ccf070b3a0fcc, type: 3}
+  - {fileID: 4584996514406405712, guid: a9a29d3a786014e46a475fbce3aa44d8, type: 3}
   - {fileID: 7863193589201119740, guid: 0f941351b8d92fe4e866e7e2c5baa355, type: 3}
-  - {fileID: 8096376960520207986, guid: 88d16380a36714d469de20ac93ec633a, type: 3}

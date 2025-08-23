@@ -262,11 +262,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectiblePrefab:
-  - {fileID: 6943731269484171944, guid: 4efeebec6799be849ac02f9cadd535d1, type: 3}
-  - {fileID: 6813903231687581813, guid: 2c0da6fb8bc2f0c4a818692b0f15a220, type: 3}
-  - {fileID: 5539544332989365572, guid: 134bf73d94e024a4997c220cae38050f, type: 3}
-  - {fileID: 6017810162894074735, guid: 8706978f0fc32844a8ce1a9506b00bdc, type: 3}
+  - {fileID: 7863193589201119740, guid: 0f941351b8d92fe4e866e7e2c5baa355, type: 3}
+  - {fileID: 4584996514406405712, guid: a9a29d3a786014e46a475fbce3aa44d8, type: 3}
   - {fileID: 8096376960520207986, guid: 88d16380a36714d469de20ac93ec633a, type: 3}
+  - {fileID: 6947649154048406816, guid: 177a22f59883e7c4daffb6800836c8aa, type: 3}
+  - {fileID: 8772018573280988245, guid: 6cbd72dfaa0e3f94c8c7103c54a41699, type: 3}
+  - {fileID: 6813903231687581813, guid: 2c0da6fb8bc2f0c4a818692b0f15a220, type: 3}
 --- !u!1 &2481442148223753750
 GameObject:
   m_ObjectHideFlags: 0

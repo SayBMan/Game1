@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public PlayerStamina playerStamina;
     public Collider2D childCollider;
     public GameOverUIController gameOverUI;
+    public WaveUIController waveUIController;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -72,6 +73,8 @@ public class PlayerController : MonoBehaviour
     #region Input
     private void GetInput()
     {
+        if (waveUIController.IsOpen) return;
+        
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
         facingDirection = new Vector2(moveX, moveY).normalized;

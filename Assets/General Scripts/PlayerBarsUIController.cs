@@ -36,9 +36,6 @@ public class PlayerBarsUIController : MonoBehaviour
     void Update()
     {
         healthSlider.value = playerHealth.currentHealth;
-
-        // Stamina’yı güncelle
-        staminaSlider.maxValue = playerStamina.maxStamina;
         staminaSlider.value = playerStamina.currentStamina;
 
         // Önce max value’yu güncelle
@@ -54,6 +51,18 @@ public class PlayerBarsUIController : MonoBehaviour
             ).SetEase(Ease.OutQuad);
 
             lastMaxHealth = playerHealth.maxHealth;
+        }
+
+        // Stamina için aynı işlemleri yap
+        if (playerStamina.maxStamina != staminaSlider.maxValue)
+        {
+            staminaSlider.maxValue = playerStamina.maxStamina;
+
+            float newWidth = playerStamina.maxStamina * widthPerStamina;
+            staminaFill.DOSizeDelta(
+                new Vector2(newWidth, staminaFill.sizeDelta.y),
+                0.3f
+            ).SetEase(Ease.OutQuad);
         }
     }
 }

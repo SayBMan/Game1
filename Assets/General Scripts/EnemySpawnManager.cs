@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class EnemySpawnManager : MonoBehaviour
     public GameObject[] Enemies;
     public Tilemap obstacleTilemap;
     public Transform playerTransform;
-    public WaveUIController waveUI;
 
     [Header("Spawn area")]
     public float spawnRangeX = 18f;
@@ -21,27 +21,12 @@ public class EnemySpawnManager : MonoBehaviour
     public float minDistanceFromPlayer = 2f;
 
     [Header("Spawn timing")]
-    public float spawnRate = 1.0f; // seconds between spawns (real time)
-    public float startDelay = 1.0f;
-    public float interWaveDelay = 0.2f; // artık çok kısa (opsiyonel)
-
-    [Header("Wave sizing")]
-    public int baseEnemiesPerWave = 3;
-    public int enemiesPerWaveIncrement = 1;
-
-    [Header("Powerup choices")]
-    public GameObject[] allPowerupPrefabs;
-    public int choicesPerWave = 3;
+    public float defaultSpawnRate = 1.0f; // seconds between spawns (real time)
 
     // runtime
-    private int currentWave = 1;
-    private int enemiesToSpawnThisWave = 0;
-    private int spawnedThisWave = 0;
     private int aliveEnemies = 0;
-    private bool isSpawningWave = false;
-
-    public bool enableSceneCountFallback = true;
-    public int sceneFallbackCheckEveryFrames = 30;
+    private bool isSpawning = false;
+    private Coroutine spawnCoroutine;
 
     void Awake()
     {
@@ -56,169 +41,90 @@ public class EnemySpawnManager : MonoBehaviour
             var p = GameObject.FindGameObjectWithTag("Player");
             if (p != null) playerTransform = p.transform;
         }
-
-        StartCoroutine(StartNextWaveDelayed(startDelay));
     }
 
-    IEnumerator StartNextWaveDelayed(float delay)
+    /// <summary>
+    /// Başlat: belirtilen sayıda düşmanı, verilen spawnRate ile spawn et.
+    /// onWaveComplete callback'i, tüm düşmanlar öldüğünde çağrılacak.
+    /// </summary>
+    public void StartWave(int enemiesToSpawn, float spawnRate, Action onWaveComplete)
     {
-        yield return new WaitForSecondsRealtime(delay);
-        StartWave(currentWave);
+        if (isSpawning) return;
+        spawnCoroutine = StartCoroutine(SpawnWaveCoroutine(enemiesToSpawn, spawnRate > 0 ? spawnRate : defaultSpawnRate, onWaveComplete));
     }
 
-    public void StartWave(int waveNumber)
+    IEnumerator SpawnWaveCoroutine(int enemiesToSpawn, float spawnRate, Action onWaveComplete)
     {
-        if (isSpawningWave) return;
-        currentWave = Mathf.Max(1, waveNumber);
-        enemiesToSpawnThisWave = baseEnemiesPerWave + (currentWave - 1) * enemiesPerWaveIncrement;
-        spawnedThisWave = 0;
-        isSpawningWave = true;
+        isSpawning = true;
 
-        if (waveUI != null) waveUI.ShowWaveLabel(currentWave);
-
-        StartCoroutine(SpawnWaveCoroutine());
-    }
-
-    IEnumerator SpawnWaveCoroutine()
-    {
-        for (int i = 0; i < enemiesToSpawnThisWave; i++)
+        for (int i = 0; i < enemiesToSpawn; i++)
         {
             bool spawned = false;
             int attempts = 0;
             while (!spawned && attempts < 50)
             {
                 attempts++;
-                Vector2 spawnPos;
-                if (FindValidSpawnPosition(out spawnPos))
+                if (FindValidSpawnPosition(out Vector2 spawnPos))
                 {
                     if (Enemies != null && Enemies.Length > 0)
                     {
-                        int randomIndex = Random.Range(0, Enemies.Length);
+                        int randomIndex = UnityEngine.Random.Range(0, Enemies.Length);
                         GameObject enemyPrefab = Enemies[randomIndex];
-                        var go = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-                        // increment live counter
+                        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
                         aliveEnemies++;
-                        spawnedThisWave++;
                         spawned = true;
                     }
-                    else
-                    {
-
-                        break;
-                    }
+                    else break;
                 }
                 yield return new WaitForSecondsRealtime(0.02f);
             }
 
             if (!spawned)
             {
+                // fallback random position
                 Vector2 fallbackPos = new Vector2(
-                    Random.Range(spawnRangeXneg, spawnRangeX),
-                    Random.Range(spawnRangeYneg, spawnRangeY)
+                    UnityEngine.Random.Range(spawnRangeXneg, spawnRangeX),
+                    UnityEngine.Random.Range(spawnRangeYneg, spawnRangeY)
                 );
-
                 if (Enemies != null && Enemies.Length > 0)
                 {
-                    var go = Instantiate(Enemies[Random.Range(0, Enemies.Length)], fallbackPos, Quaternion.identity);
+                    Instantiate(Enemies[UnityEngine.Random.Range(0, Enemies.Length)], fallbackPos, Quaternion.identity);
                     aliveEnemies++;
-                    spawnedThisWave++;
                 }
             }
 
             yield return new WaitForSecondsRealtime(spawnRate);
         }
 
-        isSpawningWave = false;
+        isSpawning = false;
 
-        // wait until all alive enemies are zero (primary check = aliveEnemies)
-        int frames = 0;
+        // wait until all alive enemies are gone
         while (aliveEnemies > 0)
-        {
-            if (enableSceneCountFallback)
-            {
-                frames++;
-                if (frames >= sceneFallbackCheckEveryFrames)
-                {
-                    frames = 0;
-                    int realCount = CountEnemiesInScene();
-                    if (realCount == 0)
-                    {
-                        aliveEnemies = 0;
-                        break;
-                    }
-                    else
-                    {
-                        if (realCount > aliveEnemies)
-                            aliveEnemies = realCount;
-                    }
-                }
-            }
             yield return null;
-        }
 
-        // küçük delay (opsiyonel) ardından powerup UI'ı hemen göster
-        yield return new WaitForSecondsRealtime(interWaveDelay);
-        ShowPowerupAndWait();
+        onWaveComplete?.Invoke();
     }
 
-    private void ShowPowerupAndWait()
-    {
-        GameObject[] choices = PickRandomUnique(allPowerupPrefabs, Mathf.Min(choicesPerWave, allPowerupPrefabs.Length));
-
-        if (waveUI != null)
-        {
-            waveUI.ShowPowerupChoices(choices, OnPowerupChosen);
-        }
-        else
-        {
-            OnPowerupChosen(null);
-        }
-    }
-
-    private void OnPowerupChosen(GameObject chosenPrefab)
-    {
-        if (chosenPrefab != null && playerTransform != null)
-        {
-            Vector3 spawnPos = playerTransform.position + Vector3.up * 0.6f;
-            Instantiate(chosenPrefab, spawnPos, Quaternion.identity);
-        }
-
-        currentWave++;
-        StartCoroutine(StartNextWaveDelayed(0.6f));
-    }
-
+    /// <summary>
+    /// Drop-in: düşman ölünce çağır. (Enemy script'inden çağır.)
+    /// </summary>
     public void NotifyEnemyDied()
     {
         aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
     }
 
-    private GameObject[] PickRandomUnique(GameObject[] source, int count)
-    {
-        List<GameObject> pool = new List<GameObject>();
-        if (source != null) pool.AddRange(source);
-        pool.RemoveAll(x => x == null);
-        List<GameObject> chosen = new List<GameObject>();
-        for (int i = 0; i < count && pool.Count > 0; i++)
-        {
-            int idx = Random.Range(0, pool.Count);
-            chosen.Add(pool[idx]);
-            pool.RemoveAt(idx);
-        }
-        return chosen.ToArray();
-    }
-
+    /// <summary>
+    /// Basit pozisyon bulucu — map tile'larına göre engel kontrolü yapar.
+    /// </summary>
     public bool FindValidSpawnPosition(out Vector2 position)
     {
-        if (playerTransform == null)
-        {
-            position = Vector2.zero;
-            return false;
-        }
+        position = Vector2.zero;
+        if (playerTransform == null) return false;
 
         for (int i = 0; i < 60; i++)
         {
-            float spawnX = Random.Range(spawnRangeXneg, spawnRangeX);
-            float spawnY = Random.Range(spawnRangeYneg, spawnRangeY);
+            float spawnX = UnityEngine.Random.Range(spawnRangeXneg, spawnRangeX);
+            float spawnY = UnityEngine.Random.Range(spawnRangeYneg, spawnRangeY);
             Vector2 testPos = new Vector2(spawnX, spawnY);
 
             if (Vector2.Distance(testPos, playerTransform.position) < minDistanceFromPlayer)
@@ -227,21 +133,13 @@ public class EnemySpawnManager : MonoBehaviour
             if (obstacleTilemap != null)
             {
                 Vector3Int cellPos = obstacleTilemap.WorldToCell(testPos);
-                if (obstacleTilemap.GetTile(cellPos) != null)
-                    continue;
+                if (obstacleTilemap.GetTile(cellPos) != null) continue;
             }
 
             position = testPos;
             return true;
         }
 
-        position = Vector2.zero;
         return false;
-    }
-
-    private int CountEnemiesInScene()
-    {
-        var gos = GameObject.FindGameObjectsWithTag("Enemy");
-        return gos != null ? gos.Length : 0;
     }
 }

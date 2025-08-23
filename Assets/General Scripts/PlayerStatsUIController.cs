@@ -21,12 +21,12 @@ public class PlayerStatsUIController : MonoBehaviour
 
     private void UpdateDamage()
     {
-        statsSlots[0].GetComponentInChildren<TextMeshProUGUI>().text = "Dmg: " + playerAttack.attackDamage;
+        statsSlots[0].GetComponentInChildren<TextMeshProUGUI>().text = "Damage: " + playerAttack.attackDamage;
     }
 
     private void UpdateArmor()
     {
-        statsSlots[1].GetComponentInChildren<TextMeshProUGUI>().text = "Arm: " + playerHealth.currentArmor;
+        statsSlots[1].GetComponentInChildren<TextMeshProUGUI>().text = "Armor: " + playerHealth.currentArmor;
     }
 
     private void UpdateMoveSpeed()
@@ -34,22 +34,11 @@ public class PlayerStatsUIController : MonoBehaviour
         statsSlots[2].GetComponentInChildren<TextMeshProUGUI>().text = "Speed: " + playerController.moveSpeed;
     }
 
-    private void UpdateMaxHealth()
-    {
-        statsSlots[3].GetComponentInChildren<TextMeshProUGUI>().text = "MaxHP: " + playerHealth.maxHealth;
-    }
-
-    private void UpdateMaxStamina()
-    {
-        statsSlots[4].GetComponentInChildren<TextMeshProUGUI>().text = "MaxSta: " + playerStamina.maxStamina;
-    }
 
     private void UpdateAllStats()
     {
         UpdateDamage();
         UpdateArmor();
         UpdateMoveSpeed();
-        UpdateMaxHealth();
-        UpdateMaxStamina();
     }
 }
