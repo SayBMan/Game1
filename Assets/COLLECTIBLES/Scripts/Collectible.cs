@@ -77,6 +77,15 @@ public class Collectible : MonoBehaviour
                 // İleride eklenebilir
                 break;
 
+            case ItemType.Gloves:
+                playerAttack.attackSpeed += playerAttack.attackSpeed * data.value / 100;
+                playerAttack.attackCooldown -= playerAttack.attackCooldown * data.value / 100;
+                break;
+
+            case ItemType.Boots:
+                playerController.moveSpeed += playerController.moveSpeed * data.value / 100;
+                break;
+
             case ItemType.Weapon:
                 playerAttack.attackDamage += data.value;
                 break;
@@ -95,6 +104,11 @@ public class Collectible : MonoBehaviour
 
             case ItemType.Stamina:
                 playerStamina.maxStamina += data.value;
+                break;
+
+            case ItemType.Skull:
+                playerAttack.attackDamage += data.value;
+                playerHealth.maxHealth -= 40;
                 break;
 
             default:

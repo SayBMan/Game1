@@ -446,10 +446,12 @@ public class EnemyController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         deadPosition = GetDirection(lastFacingDirection);
         ChangeState(EnemyState.Dead);
+        isDead = true;
         if (anim != null)
         {
             anim.SetTrigger("isDead");
             anim.SetInteger("DeadPosition", deadPosition);
+            Debug.Log("Enemy died");
         }
         if (rb != null) rb.simulated = false;
         if (rb_child != null) rb_child.simulated = false;

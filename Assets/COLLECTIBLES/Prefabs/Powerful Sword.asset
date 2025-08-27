@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Powerful Sword
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 5
   itemName: Powerful Sword
   icon: {fileID: 2451002373052964623, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 4
   dropChance: 2
+  description: +4 Damage

@@ -8,6 +8,7 @@ public class CollectibleData : ScriptableObject
     public Sprite icon;
     public float value;
     public int dropChance;
+    public string description;
 }
 
 public enum ItemType
@@ -15,9 +16,12 @@ public enum ItemType
     Food,
     Armor,
     Helmet,
+    Gloves,
+    Boots,
     Weapon,
     HealthPotion,
     StaminaPotion,
     Health,
     Stamina,
+    Skull,
 }

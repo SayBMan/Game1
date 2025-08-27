@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Leaf
   m_EditorClassIdentifier: 
-  itemType: 7
+  itemType: 9
   itemName: Leaf
   icon: {fileID: -721593270, guid: 813a39c779ea36c48bbf8aa12d2747a5, type: 3}
   value: 10
   dropChance: 3
+  description: +10 Max Stamina

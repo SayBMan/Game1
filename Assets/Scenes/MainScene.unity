@@ -353,6 +353,7 @@ MonoBehaviour:
   Enemies:
   - {fileID: 1434734520764804541, guid: 5d1c4a716d74f9147a7872c9b35b5e7b, type: 3}
   - {fileID: 5570983968691185332, guid: 18919c277458bce4593efc16601ebd3d, type: 3}
+  - {fileID: 3517275543785220518, guid: 33cb0d0abcd14fb4d88f01ec3c3e046b, type: 3}
   obstacleTilemap: {fileID: 648630682}
   playerTransform: {fileID: 1423313610}
   spawnRangeX: 18
@@ -10273,6 +10274,7 @@ MonoBehaviour:
   - {fileID: 7082826926947058445, guid: c3fb7f31fd4a0d94e983a0a6b0f91686, type: 3}
   - {fileID: 4651815693820497064, guid: 6bf05c1ff1eb90048a634be103b3e369, type: 3}
   - {fileID: 7122189629474482248, guid: 9db7292e5adb80b47ae01da5dba46ec9, type: 3}
+  - {fileID: 5154618514102391832, guid: b5ee74db357d3df4395f3329e649146a, type: 3}
   choicesPerWave: 3
   startDelay: 1
   interWaveDelay: 0.6
@@ -51050,8 +51052,8 @@ GameObject:
   - component: {fileID: 1423313612}
   - component: {fileID: 1423313611}
   - component: {fileID: 1423313607}
-  - component: {fileID: 1423313615}
   - component: {fileID: 1423313614}
+  - component: {fileID: 1423313615}
   - component: {fileID: 1423313616}
   - component: {fileID: 1423313617}
   - component: {fileID: 1423313619}
@@ -53081,13 +53083,13 @@ SceneRoots:
   - {fileID: 471653385}
   - {fileID: 619394802}
   - {fileID: 1786145467}
-  - {fileID: 1878149693}
   - {fileID: 1432935162}
+  - {fileID: 1123534167}
   - {fileID: 1662608829}
   - {fileID: 1252643709}
   - {fileID: 968878939}
   - {fileID: 388588801}
-  - {fileID: 1123534167}
+  - {fileID: 1878149693}
   - {fileID: 1325837030}
   - {fileID: 78615720}
   - {fileID: 1423313610}

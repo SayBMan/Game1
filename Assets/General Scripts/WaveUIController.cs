@@ -5,13 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Basit ve temiz Wave UI controller.
-/// - Wave label gösterir (kısa süre).
-/// - Powerup seçim ekranı açar; prefabChoices içerisinden butonlar oluşturur.
-/// - optionsContainer üzerinde var olan LayoutGroup'u kullanır; yoksa HorizontalLayoutGroup ekler.
-/// - optionSpacing / optionPadding ile buton aralığını kontrol edebilirsin.
-/// </summary>
 public class WaveUIController : MonoBehaviour
 {
     [Header("Wave label")]
@@ -25,10 +18,9 @@ public class WaveUIController : MonoBehaviour
     public int optionCount = 3;            // kaç seçenek gösterilecek
 
     [Header("Layout (spacing/padding)")]
-    public float optionSpacing = 12f;      // HorizontalLayoutGroup.spacing veya Grid hücreleri arasına etki
-    public Vector4 optionPadding = new Vector4(8, 8, 8, 8); // left, top, right, bottom (kullanıldığında RectOffset'e çevrilir)
+    public float optionSpacing = 12f;
+    public Vector4 optionPadding = new Vector4(8, 8, 8, 8);
 
-    // dahili
     private List<GameObject> spawnedButtons = new List<GameObject>();
     private Action<GameObject> onChosenCallback;
     public bool IsOpen { get; private set; } = false;
@@ -37,9 +29,9 @@ public class WaveUIController : MonoBehaviour
     {
         if (powerupPanel != null) powerupPanel.SetActive(false);
 
-        // Eğer optionsContainer atanmamışsa, powerupPanel içinden otomatik almayı dene
         if (optionsContainer == null && powerupPanel != null)
         {
+            // dikkat: powerupPanel içindeki gerçek container'ı inspector'da daha doğru set et
             optionsContainer = powerupPanel.GetComponentInChildren<RectTransform>();
         }
     }
@@ -48,7 +40,6 @@ public class WaveUIController : MonoBehaviour
     public void ShowWaveLabel(int waveIndex)
     {
         if (waveLabel == null) return;
-        // Kullanıcı Wave numarasını 1 tabanlı görmek isterse burada ayarlanır.
         waveLabel.text = $"Wave {Math.Max(1, waveIndex)}";
         waveLabel.gameObject.SetActive(true);
         StopAllCoroutines();
@@ -63,21 +54,14 @@ public class WaveUIController : MonoBehaviour
     #endregion
 
     #region Powerup UI
-    /// <summary>
-    /// prefabChoices: düşüreceğin item prefablari (Collectible içerebilir).
-    /// onChosen: seçileni geri çağırır (GameObject prefab).
-    /// </summary>
     public void ShowPowerupChoices(GameObject[] prefabChoices, Action<GameObject> onChosen)
     {
-        // Basit validasyon
         if (powerupPanel == null || optionsContainer == null || buttonPrefab == null || prefabChoices == null || prefabChoices.Length == 0)
         {
-            // güvenle callback çağır
             onChosen?.Invoke(null);
             return;
         }
 
-        // Filtrele: null olanları çıkar
         var choices = new List<GameObject>();
         foreach (var p in prefabChoices) if (p != null) choices.Add(p);
         if (choices.Count == 0)
@@ -86,19 +70,14 @@ public class WaveUIController : MonoBehaviour
             return;
         }
 
-        // Aç / pause
         powerupPanel.SetActive(true);
         Time.timeScale = 0f;
         IsOpen = true;
         onChosenCallback = onChosen;
 
-        // Layout ayarla (varsa kullan, yoksa HorizontalLayoutGroup ekle)
         EnsureLayoutOnContainer();
-
-        // Eski butonları temizle
         CleanupSpawnedButtons();
 
-        // Kaç buton oluşturulacak?
         int count = Mathf.Min(optionCount, choices.Count);
 
         for (int i = 0; i < count; i++)
@@ -107,7 +86,6 @@ public class WaveUIController : MonoBehaviour
             CreateOptionButton(choicePrefab);
         }
 
-        // Layout güncelle
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(optionsContainer);
     }
@@ -124,19 +102,28 @@ public class WaveUIController : MonoBehaviour
             return;
         }
 
-        // Icon ve isim doldurma (esnek)
+        // Icon ve isim doldurma
         var icon = FindImageIn(btnGO.transform);
-        var tmp = FindTMPTextIn(btnGO.transform);
+        var nameText = FindTMPTextByName(btnGO.transform, "NameText");
+        var descText = FindTMPTextByName(btnGO.transform, "DescriptionText"); // yeni: alt açıklama alanı
 
         var coll = choicePrefab.GetComponent<Collectible>();
         if (coll != null && coll.data != null)
         {
-            if (tmp != null) tmp.text = coll.data.itemName;
+            if (nameText != null) nameText.text = coll.data.itemName;
             if (icon != null && coll.data.icon != null) icon.sprite = coll.data.icon;
+
+            // Açıklamayı ayarla: önce CollectibleData.description, yoksa kısa fallback
+            string desc = !string.IsNullOrEmpty(coll.data.description)
+                          ? coll.data.description
+                          : $"Value: {coll.data.value}";
+
+            if (descText != null) descText.text = desc;
         }
         else
         {
-            if (tmp != null) tmp.text = choicePrefab.name;
+            if (nameText != null) nameText.text = choicePrefab.name;
+            if (descText != null) descText.text = "";
         }
 
         // Buton tıklaması
@@ -148,7 +135,6 @@ public class WaveUIController : MonoBehaviour
 
     private void OnOptionSelected(GameObject chosenPrefab)
     {
-        // Kapat, resume ve callback
         ClosePowerupUI();
         onChosenCallback?.Invoke(chosenPrefab);
         onChosenCallback = null;
@@ -172,15 +158,12 @@ public class WaveUIController : MonoBehaviour
     #region Layout helpers
     private void EnsureLayoutOnContainer()
     {
-        // Eğer zaten bir LayoutGroup varsa onu kullan (GridLayoutGroup / Horizontal / Vertical)
         var existing = optionsContainer.GetComponent<LayoutGroup>();
         if (existing != null)
         {
-            // Eğer GridLayoutGroup varsa cell spacing veya cell size'ı Inspector'dan ayarla istersin.
             var grid = existing as GridLayoutGroup;
             if (grid != null)
             {
-                // grid spacing ayarla
                 grid.spacing = new Vector2(optionSpacing, optionSpacing);
                 grid.padding = new RectOffset(
                     (int)optionPadding.x, (int)optionPadding.z,
@@ -211,7 +194,6 @@ public class WaveUIController : MonoBehaviour
             }
         }
 
-        // Hiç layout yoksa HorizontalLayoutGroup ekle ve ayarla
         var h = optionsContainer.gameObject.AddComponent<HorizontalLayoutGroup>();
         h.spacing = optionSpacing;
         h.childAlignment = TextAnchor.MiddleCenter;
@@ -223,7 +205,6 @@ public class WaveUIController : MonoBehaviour
             (int)optionPadding.x, (int)optionPadding.z,
             (int)optionPadding.y, (int)optionPadding.w);
 
-        // ve ContentSizeFitter ekle (tercihe göre)
         var fitter = optionsContainer.GetComponent<ContentSizeFitter>();
         if (fitter == null)
         {
@@ -253,15 +234,17 @@ public class WaveUIController : MonoBehaviour
         return null;
     }
 
-    private TMP_Text FindTMPTextIn(Transform root)
+    // Yeni yardımcı: isme göre TMP_Text bulur; yoksa ilk TMP_Text döner
+    private TMP_Text FindTMPTextByName(Transform root, string childName)
     {
-        var named = root.Find("NameText");
+        var named = root.Find(childName);
         if (named != null)
         {
             var t = named.GetComponent<TMP_Text>();
             if (t != null) return t;
         }
 
+        // fallback: herhangi bir TMP_Text
         var texts = root.GetComponentsInChildren<TMP_Text>(true);
         foreach (var t in texts)
         {

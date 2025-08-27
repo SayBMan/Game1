@@ -17,3 +17,4 @@ MonoBehaviour:
   icon: {fileID: -728680025, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 2
   dropChance: 4
+  description: +2 Armor

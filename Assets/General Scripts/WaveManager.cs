@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,6 +51,8 @@ public class WaveManager : MonoBehaviour
 
         if (spawnManager != null)
         {
+            // spawn manager'in StartWave(argh...) signature'ına göre uyarlayın
+            // Eğer sizin spawnManager farklı parametre bekliyorsa küçükçe düzenleyin
             spawnManager.StartWave(enemies, spawnManager.defaultSpawnRate, OnWaveComplete);
         }
         else
@@ -77,8 +78,8 @@ public class WaveManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(interWaveDelay);
 
-        // Powerup seçimlerini hazırla
-        GameObject[] choices = PickRandomUnique(allPowerupPrefabs, Mathf.Min(choicesPerWave, allPowerupPrefabs.Length));
+        // Powerup seçimlerini hazırla (unique by ItemType)
+        GameObject[] choices = PickRandomUniqueByType(allPowerupPrefabs, choicesPerWave);
 
         if (waveUI != null)
         {
@@ -104,18 +105,76 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(StartNextWaveDelayed(0.6f));
     }
 
-    private GameObject[] PickRandomUnique(GameObject[] source, int count)
+ 
+    private GameObject[] PickRandomUniqueByType(GameObject[] source, int count)
     {
-        List<GameObject> pool = new List<GameObject>();
-        if (source != null) pool.AddRange(source);
+        if (source == null || source.Length == 0 || count <= 0) return new GameObject[0];
+
+        // build map: typeKey -> list of prefabs with that type
+        var pool = new List<GameObject>();
+        pool.AddRange(source);
         pool.RemoveAll(x => x == null);
-        List<GameObject> chosen = new List<GameObject>();
-        for (int i = 0; i < count && pool.Count > 0; i++)
+
+        // shuffle pool (Fisher-Yates) to ensure randomness within groups
+        for (int i = pool.Count - 1; i > 0; i--)
         {
-            int idx = UnityEngine.Random.Range(0, pool.Count);
-            chosen.Add(pool[idx]);
-            pool.RemoveAt(idx);
+            int j = Random.Range(0, i + 1);
+            var tmp = pool[i];
+            pool[i] = pool[j];
+            pool[j] = tmp;
         }
+
+        // dictionary keyed by "typeKey" (string) so we can handle missing Collectible gracefully
+        var groups = new Dictionary<string, List<GameObject>>();
+
+        foreach (var prefab in pool)
+        {
+            string key = GetTypeKey(prefab);
+            if (!groups.TryGetValue(key, out var list))
+            {
+                list = new List<GameObject>();
+                groups[key] = list;
+            }
+            list.Add(prefab);
+        }
+
+        // now pick up to 'count' distinct keys; for each key select one random prefab from that group's list
+        var keys = new List<string>(groups.Keys);
+
+        // shuffle keys to randomize which types are picked first
+        for (int i = keys.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            var tmp = keys[i];
+            keys[i] = keys[j];
+            keys[j] = tmp;
+        }
+
+        var chosen = new List<GameObject>();
+        int take = Mathf.Min(count, keys.Count);
+        for (int i = 0; i < take; i++)
+        {
+            string k = keys[i];
+            var list = groups[k];
+            // list is already in random order (we shuffled pool), but pick one at random to be safe
+            var pick = list[Random.Range(0, list.Count)];
+            chosen.Add(pick);
+        }
+
         return chosen.ToArray();
+    }
+
+    private string GetTypeKey(GameObject prefab)
+    {
+        if (prefab == null) return "__null__";
+        var coll = prefab.GetComponent<Collectible>();
+        if (coll != null && coll.data != null)
+        {
+            // itemType varsa onu kullan (tam olarak tekilleştirir)
+            return coll.data.itemType.ToString();
+        }
+
+        // fallback: prefab adıyla tekilleştir
+        return "__PREFAB__:" + prefab.name;
     }
 }

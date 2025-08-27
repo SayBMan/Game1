@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Basic Sword
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 5
   itemName: Basic Sword
   icon: {fileID: -6033885931137250393, guid: aea078ca641bc064caf7d32e89fc243d, type: 3}
   value: 2
   dropChance: 5
+  description: +2 Damage

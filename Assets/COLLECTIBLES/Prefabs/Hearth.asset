@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7531e51234c311445aa09e92aa261199, type: 3}
   m_Name: Hearth
   m_EditorClassIdentifier: 
-  itemType: 6
+  itemType: 8
   itemName: Hearth
   icon: {fileID: -1792484858600484507, guid: a379f8e7066eb3e438bb17844ae5d6ab, type: 3}
   value: 10
   dropChance: 3
+  description: +10 Max Health
