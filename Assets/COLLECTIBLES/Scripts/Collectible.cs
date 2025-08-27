@@ -11,7 +11,7 @@ public class Collectible : MonoBehaviour
     private PlayerStamina playerStamina;
     private PlayerController playerController;
 
-    private bool isCollected = false; // Çift tetiklemeyi engellemek için
+    private bool isCollected = false;
 
     void Start()
     {
@@ -24,7 +24,7 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isCollected) return; // Daha önce toplandıysa çık
+        if (isCollected) return;
         if (collision.CompareTag("Player"))
         {
             isCollected = true;
@@ -74,7 +74,7 @@ public class Collectible : MonoBehaviour
                 break;
 
             case ItemType.Helmet:
-                // İleride eklenebilir
+                
                 break;
 
             case ItemType.Gloves:
@@ -119,7 +119,7 @@ public class Collectible : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Obje yok olurken aktif tüm tween'leri öldür
+        
         transform.DOKill();
     }
 }

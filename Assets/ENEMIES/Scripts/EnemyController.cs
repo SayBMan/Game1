@@ -94,10 +94,8 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        // Eğer player referansı yoksa ya da player ölmüşse (isDead true) hareketi durdur ve beka etme.
         if (player == null || (playerController != null && playerController.isDead))
         {
-            // kesin hareket durması için hem facingDirection temizle hem de rigidbody hızını sıfırla
             ClearMovement();
             rb.linearVelocity = Vector2.zero;
             MovementAnimationControl();
@@ -156,7 +154,6 @@ public class EnemyController : MonoBehaviour
             {
                 if (!TryFindAndSetGridTarget())
                 {
-                    // fallback exhausted for this session
                     fallbackActive = false;
                     fallbackExhausted = true;
                     isEngaged = false;
@@ -169,7 +166,7 @@ public class EnemyController : MonoBehaviour
                 float d = Vector2.Distance(transform.position, currentTargetPoint.Value);
                 if (d <= reachThreshold)
                 {
-                    currentTargetPoint = null; // reached -> will search next
+                    currentTargetPoint = null;
                 }
                 else
                 {
@@ -188,7 +185,6 @@ public class EnemyController : MonoBehaviour
                 ClearMovement();
                 return;
             }
-            // If started, next loop will handle movement
         }
 
         if (fallbackActive && !currentTargetPoint.HasValue)
@@ -280,7 +276,6 @@ public class EnemyController : MonoBehaviour
 
         var all = playerGridPoints.GetAllPoints();
 
-        // 1) build list of (point, distToEnemy) so we can sort by proximity to enemy
         var list = new List<(Vector2 point, float dist)>(all.Count);
         for (int i = 0; i < all.Count; i++)
         {
@@ -289,17 +284,14 @@ public class EnemyController : MonoBehaviour
             list.Add((p, dEnemy));
         }
 
-        // 2) sort by distance to enemy (closest first)
         list.Sort((a, b) => a.dist.CompareTo(b.dist));
 
-        // 3) decide how many to check
         int maxChecks = (gridCandidateLimit > 0) ? Mathf.Min(gridCandidateLimit, list.Count) : list.Count;
 
         float bestScore = float.MaxValue;
         Vector2? best = null;
         int checkedCount = 0;
 
-        // 4) iterate through the top-N nearest points and choose best visible one
         for (int i = 0; i < list.Count && checkedCount < maxChecks; i++)
         {
             var pnt = list[i].point;
@@ -459,7 +451,6 @@ public class EnemyController : MonoBehaviour
 
     public void Die()
     {
-        // notify listeners
         if (EnemySpawnManager.Instance != null)
         EnemySpawnManager.Instance.NotifyEnemyDied();
 
@@ -478,12 +469,10 @@ public class EnemyController : MonoBehaviour
         return 1;
     }
 
-    // Avoidance kept but simplified: early return when desired is near-zero
     private Vector2 ComputeAvoidanceDirection(Vector2 desired)
     {
         if (desired.sqrMagnitude <= 0.0001f) return desired.normalized;
 
-        // If avoidance strength is zero, don't try to slide — go straight
         if (avoidanceStrength <= 0f || avoidanceCastDistance <= 0f)
             return desired.normalized;
 

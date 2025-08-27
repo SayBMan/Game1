@@ -1,21 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Player etrafında kare (square) alan içinde örnek noktalar üretir.
-/// - halfSize: karenin yarı uzunluğu (x ve y yönünde)
-/// - spacing: nokta aralığı (mesh gibi)
-/// - tüm noktaları GetAllPoints() ile döndürür (world-space)
-/// </summary>
 [RequireComponent(typeof(Transform))]
 public class PlayerGridPoints : MonoBehaviour
 {
     [Header("Grid settings")]
-    [Tooltip("Karenin yarı-genişliği (Player merkezinden sağa/sola, yukarı/aşağı)")]
     public float halfSize = 1f;
-    [Tooltip("Grid içindeki noktalar arası mesafe")]
     public float spacing = 0.3f;
-    [Tooltip("Merkez (player pozisyonu) dahil edilsin mi?")]
     public bool includeCenter = true;
 
     // cache
@@ -48,9 +39,7 @@ public class PlayerGridPoints : MonoBehaviour
             for (int j = 0; j <= stepsPerSide; j++)
             {
                 Vector2 p = new Vector2(startX + i * spacing, startY + j * spacing);
-                // avoid duplicate center (if included)
                 if (includeCenter && Vector2.Distance(p, center) < 0.001f) continue;
-                // only include points inside the square (they are)
                 cachedPoints.Add(p);
             }
         }

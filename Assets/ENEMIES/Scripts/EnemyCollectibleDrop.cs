@@ -17,7 +17,6 @@ public class EnemyCollectibleDrop : MonoBehaviour
 
     private GameObject PickRandomCollectible()
     {
-        // Aday listesi
         List<GameObject> possibleDrops = new List<GameObject>();
 
         foreach (GameObject prefab in collectiblePrefab)
@@ -25,18 +24,17 @@ public class EnemyCollectibleDrop : MonoBehaviour
             Collectible collectible = prefab.GetComponent<Collectible>();
             if (collectible == null || collectible.data == null) continue;
 
-            float roll = Random.Range(0,100); // 0–100 arası
+            float roll = Random.Range(0,100);
             if (roll <= collectible.data.dropChance)
             {
-                possibleDrops.Add(prefab); // Bu item düşmeye aday
+                possibleDrops.Add(prefab);
             }
         }
 
-        // Hiç aday yoksa null döner → hiçbir şey düşmez
         if (possibleDrops.Count == 0)
             return null;
 
-        // Adaylardan rastgele birini seç
+
         int randomIndex = Random.Range(0, possibleDrops.Count);
         return possibleDrops[randomIndex];
     }

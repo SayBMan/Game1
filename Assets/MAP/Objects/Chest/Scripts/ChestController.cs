@@ -49,17 +49,14 @@ public class ChestController : MonoBehaviour
 
         if (animator != null) animator.SetTrigger("Open");
 
-        // Spawn pozisyonu
         spawnPos = collectibleSpawnPoint != null ? collectibleSpawnPoint.position : transform.position + Vector3.up * 0.5f;
 
         DropCollectible();
 
-        // Hedef: sandığın biraz altı
         Vector3 targetPos = transform.position + Vector3.down * 0.5f;
 
         if (colObj == null) return;
 
-        // DOTween ile kavisli hareket
         colObj.transform.DOJump(targetPos, jumpPower, 1, jumpDuration)
             .SetEase(Ease.OutQuad);
     }
@@ -68,7 +65,6 @@ public class ChestController : MonoBehaviour
     {
         if (collectiblePrefab == null || collectiblePrefab.Length == 0)
         {
-            Debug.LogWarning("ChestController: collectiblePrefab listesi boş! En az bir prefab ekleyin.");
             return;
         }
 
@@ -76,9 +72,6 @@ public class ChestController : MonoBehaviour
 
         if (prefabToDrop == null)
         {
-            // Çok nadir: bütün dropChance'ler 0 veya veri hatası. Fallback: rastgele non-null prefab seç.
-            Debug.LogWarning("ChestController: Hiç geçerli drop bulunamadı (tüm dropChance = 0 veya veri eksik). Fallback olarak rasgele bir prefab spawnlanacak.");
-            // find any non-null prefab
             List<GameObject> nonNull = new List<GameObject>();
             foreach (var p in collectiblePrefab) if (p != null) nonNull.Add(p);
             if (nonNull.Count == 0) return;
@@ -99,22 +92,19 @@ public class ChestController : MonoBehaviour
             if (collectible == null || collectible.data == null) continue;
 
             float weight = collectible.data.dropChance;
-            if (weight <= 0f) continue; // kesinlikle seçilmesin
+            if (weight <= 0f) continue;
 
             valid.Add((prefab, weight));
         }
 
         if (valid.Count == 0)
         {
-            // Hiç geçerli yok -> caller fallback uygulasın
             return null;
         }
 
-        // toplam ağırlık
         float totalWeight = 0f;
         for (int i = 0; i < valid.Count; i++) totalWeight += valid[i].weight;
 
-        // güvenlik: totalWeight sıfır olamaz çünkü weight > 0 filtrelendi ama kontrol edelim
         if (totalWeight <= 0f)
         {
             return null;
@@ -131,7 +121,6 @@ public class ChestController : MonoBehaviour
             }
         }
 
-        // teoretik olarak buraya gelmemeli, ama güvenlik için son elemanı dön
         return valid[^1].prefab;
     }
 }

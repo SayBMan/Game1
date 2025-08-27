@@ -23,7 +23,6 @@ public class EnemySpawnManager : MonoBehaviour
     [Header("Spawn timing")]
     public float defaultSpawnRate = 1.0f; // seconds between spawns (real time)
 
-    // runtime
     private int aliveEnemies = 0;
     private bool isSpawning = false;
     private Coroutine spawnCoroutine;
@@ -43,10 +42,6 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Başlat: belirtilen sayıda düşmanı, verilen spawnRate ile spawn et.
-    /// onWaveComplete callback'i, tüm düşmanlar öldüğünde çağrılacak.
-    /// </summary>
     public void StartWave(int enemiesToSpawn, float spawnRate, Action onWaveComplete)
     {
         if (isSpawning) return;
@@ -105,17 +100,11 @@ public class EnemySpawnManager : MonoBehaviour
         onWaveComplete?.Invoke();
     }
 
-    /// <summary>
-    /// Drop-in: düşman ölünce çağır. (Enemy script'inden çağır.)
-    /// </summary>
     public void NotifyEnemyDied()
     {
         aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
     }
 
-    /// <summary>
-    /// Basit pozisyon bulucu — map tile'larına göre engel kontrolü yapar.
-    /// </summary>
     public bool FindValidSpawnPosition(out Vector2 position)
     {
         position = Vector2.zero;

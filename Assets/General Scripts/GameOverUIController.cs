@@ -8,10 +8,10 @@ public class GameOverUIController : MonoBehaviour
     public static GameOverUIController Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private CanvasGroup panel;          // CanvasGroup on the GameOver panel (recommended)
-    [SerializeField] private TextMeshProUGUI titleText;  // optional
-    [SerializeField] private Button restartButton;       // optional
-    [SerializeField] private Button quitButton;          // optional
+    [SerializeField] private CanvasGroup panel;
+    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private Button restartButton;
+    [SerializeField] private Button quitButton;
 
     [Header("Behavior")]
     [SerializeField] private bool pauseOnShow = true;
@@ -20,14 +20,11 @@ public class GameOverUIController : MonoBehaviour
 
     void Awake()
     {
-        // singleton
         if (Instance == null) Instance = this;
         else if (Instance != this) { Destroy(gameObject); return; }
 
-        // try to find panel even if it's child and inactive
         if (panel == null) panel = GetComponentInChildren<CanvasGroup>(true);
 
-        // ensure panel starts hidden
         HideImmediate();
 
         if (restartButton != null) restartButton.onClick.AddListener(Restart);
@@ -39,7 +36,6 @@ public class GameOverUIController : MonoBehaviour
         if (shown) return;
         if (panel == null)
         {
-            // Try to find/create a CanvasGroup fallback on the first child named "Panel"
             var child = GetComponentInChildren<Transform>(true);
             if (child != null)
             {

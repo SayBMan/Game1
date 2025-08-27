@@ -10,7 +10,7 @@ public class PlayerBarsUIController : MonoBehaviour
     public Slider healthSlider;
     public Slider staminaSlider;
 
-    public RectTransform healthFill; // Slider'ın Fill objesi
+    public RectTransform healthFill;
     public RectTransform staminaFill;
     public float widthPerHealth = 10f;
     public float widthPerStamina = 10f;
@@ -21,11 +21,9 @@ public class PlayerBarsUIController : MonoBehaviour
     {
         lastMaxHealth = playerHealth.maxHealth;
 
-        // Slider'ın çubuklarını ayarla
         healthFill.sizeDelta = new Vector2(playerHealth.maxHealth * widthPerHealth, healthFill.sizeDelta.y);
         staminaFill.sizeDelta = new Vector2(playerStamina.maxStamina * widthPerStamina, staminaFill.sizeDelta.y);
 
-        // Başlangıçta değerleri ayarla
         healthSlider.maxValue = playerHealth.maxHealth;
         healthSlider.value = playerHealth.currentHealth;
 
@@ -38,12 +36,10 @@ public class PlayerBarsUIController : MonoBehaviour
         healthSlider.value = playerHealth.currentHealth;
         staminaSlider.value = playerStamina.currentStamina;
 
-        // Önce max value’yu güncelle
         if (playerHealth.maxHealth != lastMaxHealth)
         {
             healthSlider.maxValue = playerHealth.maxHealth;
 
-            // Fiziksel genişliği sağa doğru büyüt
             float newWidth = playerHealth.maxHealth * widthPerHealth;
             healthFill.DOSizeDelta(
                 new Vector2(newWidth, healthFill.sizeDelta.y),
@@ -53,7 +49,6 @@ public class PlayerBarsUIController : MonoBehaviour
             lastMaxHealth = playerHealth.maxHealth;
         }
 
-        // Stamina için aynı işlemleri yap
         if (playerStamina.maxStamina != staminaSlider.maxValue)
         {
             staminaSlider.maxValue = playerStamina.maxStamina;

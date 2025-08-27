@@ -12,10 +12,10 @@ public class WaveUIController : MonoBehaviour
     public float waveLabelDuration = 1.2f;
 
     [Header("Powerup UI")]
-    public GameObject powerupPanel;        // root panel (genelde inactive)
-    public RectTransform optionsContainer; // container for generated buttons (assign in Inspector)
-    public GameObject buttonPrefab;        // prefab with Button component
-    public int optionCount = 3;            // kaç seçenek gösterilecek
+    public GameObject powerupPanel;
+    public RectTransform optionsContainer;
+    public GameObject buttonPrefab;
+    public int optionCount = 3;
 
     [Header("Layout (spacing/padding)")]
     public float optionSpacing = 12f;
@@ -31,7 +31,6 @@ public class WaveUIController : MonoBehaviour
 
         if (optionsContainer == null && powerupPanel != null)
         {
-            // dikkat: powerupPanel içindeki gerçek container'ı inspector'da daha doğru set et
             optionsContainer = powerupPanel.GetComponentInChildren<RectTransform>();
         }
     }
@@ -102,10 +101,9 @@ public class WaveUIController : MonoBehaviour
             return;
         }
 
-        // Icon ve isim doldurma
         var icon = FindImageIn(btnGO.transform);
         var nameText = FindTMPTextByName(btnGO.transform, "NameText");
-        var descText = FindTMPTextByName(btnGO.transform, "DescriptionText"); // yeni: alt açıklama alanı
+        var descText = FindTMPTextByName(btnGO.transform, "DescriptionText");
 
         var coll = choicePrefab.GetComponent<Collectible>();
         if (coll != null && coll.data != null)
@@ -113,7 +111,6 @@ public class WaveUIController : MonoBehaviour
             if (nameText != null) nameText.text = coll.data.itemName;
             if (icon != null && coll.data.icon != null) icon.sprite = coll.data.icon;
 
-            // Açıklamayı ayarla: önce CollectibleData.description, yoksa kısa fallback
             string desc = !string.IsNullOrEmpty(coll.data.description)
                           ? coll.data.description
                           : $"Value: {coll.data.value}";
@@ -126,7 +123,6 @@ public class WaveUIController : MonoBehaviour
             if (descText != null) descText.text = "";
         }
 
-        // Buton tıklaması
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() => OnOptionSelected(choicePrefab));
 
@@ -234,7 +230,6 @@ public class WaveUIController : MonoBehaviour
         return null;
     }
 
-    // Yeni yardımcı: isme göre TMP_Text bulur; yoksa ilk TMP_Text döner
     private TMP_Text FindTMPTextByName(Transform root, string childName)
     {
         var named = root.Find(childName);
@@ -244,7 +239,6 @@ public class WaveUIController : MonoBehaviour
             if (t != null) return t;
         }
 
-        // fallback: herhangi bir TMP_Text
         var texts = root.GetComponentsInChildren<TMP_Text>(true);
         foreach (var t in texts)
         {
