@@ -99,16 +99,16 @@ public class Collectible : MonoBehaviour
                 break;
 
             case ItemType.Health:
-                playerHealth.maxHealth += data.value;
+                playerHealth.ChangeMaxHealth(data.value);
                 break;
 
             case ItemType.Stamina:
-                playerStamina.maxStamina += data.value;
+                playerStamina.ChangeMaxStamina(data.value);
                 break;
 
             case ItemType.Skull:
                 playerAttack.attackDamage += data.value;
-                playerHealth.maxHealth -= 40;
+                playerHealth.ChangeMaxHealth(-playerHealth.maxHealth * 0.4f);
                 break;
 
             default:

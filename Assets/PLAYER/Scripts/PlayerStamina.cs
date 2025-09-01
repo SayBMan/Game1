@@ -63,4 +63,9 @@ public class PlayerStamina : MonoBehaviour
         if (currentStamina > maxStamina) currentStamina = maxStamina;
     }
 
+    public void ChangeMaxStamina(float amount)
+    {
+        maxStamina += amount;
+        currentStamina = maxStamina;
+    }
 }

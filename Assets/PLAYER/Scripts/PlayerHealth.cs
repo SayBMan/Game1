@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
         {
             currentHealth += amount;
         }
-        
+
         float healthDiff = currentHealth - lastHealth;
 
         if (healthDiff < 0)
@@ -41,6 +41,12 @@ public class PlayerHealth : MonoBehaviour
         {
             playerController.GetDeath();
         }
+    }
+
+    public void ChangeMaxHealth(float amount)
+    {
+        maxHealth += amount;
+        currentHealth = maxHealth;
     }
 
 }
