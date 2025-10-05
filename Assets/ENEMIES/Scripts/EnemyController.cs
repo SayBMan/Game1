@@ -492,7 +492,7 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region Gizmos
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.color = hasLineOfSight ? Color.green : Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.18f);
@@ -515,7 +515,7 @@ public class EnemyController : MonoBehaviour
                 Gizmos.DrawSphere(p, 0.04f);
             }
         }
-    }*/
+    }
     #endregion
 
     #region State helper

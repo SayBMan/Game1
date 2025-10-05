@@ -200,7 +200,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  colliderRadius: 0.2
+  colliderRadius: 0.14
   raycastOffset: 0
   reachThreshold: 0.35
   gridCandidateLimit: 0

@@ -231,11 +231,11 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  colliderRadius: 0.2
+  colliderRadius: 0.14
   raycastOffset: 0
   reachThreshold: 0.35
   gridCandidateLimit: 0
-  avoidanceCastDistance: 0.35
+  avoidanceCastDistance: 0.45
   avoidanceStrength: 0.8
   rb: {fileID: 8093710758499559450}
   enemyAttack: {fileID: 1827518906092119809}
