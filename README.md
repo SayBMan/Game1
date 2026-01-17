@@ -4,4 +4,4 @@ This is a top-down 2D game I am currently developing to learn Unity and game dev
 
 I update the project files every day as I work on them.
 
-Edit: Mini-game has been completed for now. Audio and partical effects are still missing, but the main objective of the project was achieved.
+Edit: Mini-game has been completed for now. Audio and partical effects are still missing, but the main objective of the project was achieved. Currently on break.
